@@ -1,0 +1,230 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Flatmap — Agent Kernel</title>
+<meta name="description" content="Flatmap is a self-describing agent kernel in which agents are programs that write programs. Coming soon.">
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/site.webmanifest">
+<style>
+  :root {
+    --bg: #0e0b0b;
+    --bg-2: #171111;
+    --fg: #f4e9e9;
+    --muted: #b99a9a;
+    --accent: #e26464;
+    --accent-2: #d26464;
+    --accent-3: #6b4545;
+    --phi: 1.618;
+    --edge-space: max(1.25rem, 3vh);
+  }
+  @media (orientation: landscape) {
+    :root {
+      --edge-space: max(1.25rem, 4vh);
+    }
+  }
+  @media (prefers-color-scheme: light) {
+    :root {
+      --bg: #fbf6f6;
+      --bg-2: #f4e9e9;
+      --fg: #241616;
+      --muted: #7a5c5c;
+      --accent: #d24a4a;
+      --accent-2: #c23e3e;
+      --accent-3: #6b4545;
+    }
+  }
+
+  * { box-sizing: border-box; }
+
+  html, body {
+    height: 100%;
+    margin: 0;
+  }
+
+  body {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: safe center;
+    min-height: 100dvh;
+    padding: 0 6vw;
+    background: var(--bg);
+    color: var(--fg);
+    font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    text-align: center;
+    overflow-x: hidden;
+  }
+
+  .spacer {
+    width: 100%;
+    flex-shrink: 1;
+  }
+
+  .spacer-top {
+    flex-grow: 1;
+    min-height: var(--edge-space);
+  }
+
+  .spacer-bottom {
+    flex-grow: var(--phi);
+    min-height: calc(var(--edge-space) * var(--phi));
+  }
+
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    background: radial-gradient(60% 50% at 50% 0%, color-mix(in srgb, var(--accent) 14%, transparent), transparent 70%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  main {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex-shrink: 0;
+    gap: 1.75rem;
+    max-width: 40rem;
+  }
+
+  .logo-wrap {
+    display: inline-block;
+    animation: rise 0.8s ease-out both;
+  }
+
+  .logo {
+    width: clamp(128px, 24vw, 256px);
+    height: auto;
+    filter: drop-shadow(0 8px 24px color-mix(in srgb, var(--accent-2) 35%, transparent));
+  }
+
+  h1 {
+    margin: 0;
+    font-size: clamp(2.25rem, 6vw, 3.5rem);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    background: linear-gradient(135deg, var(--fg) 30%, var(--accent) 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    animation: rise 0.8s ease-out 0.05s both;
+  }
+
+  p.slogan {
+    margin: 0;
+    font-size: clamp(1.05rem, 2.4vw, 1.35rem);
+    color: var(--muted);
+    font-weight: 400;
+    animation: rise 0.8s ease-out 0.1s both;
+  }
+
+  .badge {
+    margin-top: 0.5rem;
+    padding: 0.4rem 1rem;
+    border-radius: 999px;
+    border: 1px solid color-mix(in srgb, var(--accent-3) 60%, transparent);
+    color: var(--muted);
+    font-size: 0.85rem;
+    letter-spacing: 0.02em;
+    animation: rise 0.8s ease-out 0.15s both;
+  }
+
+  .badge .dot {
+    display: inline-block;
+    width: 0.5rem;
+    height: 0.5rem;
+    margin-right: 0.5rem;
+    border-radius: 50%;
+    background: var(--accent);
+    box-shadow: 0 0 0 0 color-mix(in srgb, var(--accent) 60%, transparent);
+    animation: pulse 2.2s ease-in-out infinite;
+  }
+
+  @keyframes rise {
+    from { opacity: 0; transform: translateY(10px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes pulse {
+    0%   { box-shadow: 0 0 0 0 color-mix(in srgb, var(--accent) 50%, transparent); }
+    70%  { box-shadow: 0 0 0 8px color-mix(in srgb, var(--accent) 0%, transparent); }
+    100% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--accent) 0%, transparent); }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .logo-wrap, h1, p.slogan, .badge, .badge .dot {
+      animation: none;
+    }
+  }
+</style>
+</head>
+<body>
+<div class="spacer spacer-top" aria-hidden="true"></div>
+<main>
+  <span class="logo-wrap">
+  <svg class="logo" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Flatmap logo">
+    <defs>
+      <path id="a0" d="M 0,0
+           L 34,0
+           Q 39,0 39,5
+           L 39,21
+           Q 39,26 34,26
+           L 26,26
+           L 26,34
+           Q 26,39 21,39
+           L 5,39
+           Q 0,39 0,34
+           Z" />
+      <path id="a1" d="M 0,0
+           L 13,0
+           L 26,13
+           L 13,13
+           Z" />
+      <path id="a2" d="M 0,0
+           L 21,0
+           Q 26,0 26,5
+           L 26,13
+           L 13,13
+           Z" />
+      <path id="b0" d="M 0,0
+           L 13,0
+           L 13,8
+           Q 13,13 8,13
+           L 0,13
+           Z" />
+      <path id="b1" d="M 0,0
+           L 13,0
+           L 13,13
+           L 0,13
+           Z" />
+    </defs>
+    <use href="#a0" transform="translate(9, 4) skewX(-13)" fill="#d26464" />
+    <use href="#a1" transform="translate(6, 17) skewX(-13)" fill="#e26464" />
+    <use href="#a2" transform="translate(22, 4) skewX(-13)" fill="#e26464" />
+    <use href="#b0" transform="translate(32, 17) skewX(-13)" fill="#6b4545" />
+    <use href="#b0" transform="translate(16, 30) skewX(-13)" fill="#6b4545" />
+    <use href="#b1" transform="translate(9, 4) skewX(-13)" fill="#f4C4C4" />
+  </svg>
+  </span>
+
+  <h1>flatmap</h1>
+  <p class="slogan">A self-describing agent kernel in which<br>agents are programs that write programs.</p>
+  <div class="badge"><span class="dot"></span>Coming soon</div>
+</main>
+<div class="spacer spacer-bottom" aria-hidden="true"></div>
+<script>
+  console.log(
+    "%c ▄▄\n█▀%c unfold the future",
+    "color:#e26464;font-family:monospace;font-size:13px;font-weight:bold;",
+    "color:#b99a9a;font-family:monospace;font-size:11px;"
+  );
+</script>
+</body>
+</html>
